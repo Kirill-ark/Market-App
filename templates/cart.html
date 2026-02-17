@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart - SPORT NUTRITION</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box;
+            height: 60px;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .content {
+            padding-top: 100px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .box {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            padding: 20px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 120px 170px;
+            gap: 12px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .price {
+            text-align: right;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            font-size: 12px;
+            padding: 10px 10px;
+            background: grey;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.25);
+            width: 40px;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: black;
+        }
+
+        .qty {
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .total {
+            margin-top: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .empty {
+            text-align: center;
+            color: #555;
+            padding: 30px 0;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 14px;
+            color: #3498db;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="/" class="logo">SPORT NUTRITION</a>
+    <nav class="menu">
+        <a href="/">Catalog</a>
+        <a href="/cart">Cart</a>
+        <a href="/logout">LogOut</a>
+    </nav>
+</header>
+
+<div class="content">
+    <div class="box">
+        <h2 style="margin-top: 0; color:#2c3e50;">Your cart</h2>
+
+        {% if items|length == 0 %}
+            <div class="empty">Cart is empty</div>
+            <a class="back" href="/">← Back to catalog</a>
+        {% else %}
+            {% for item in items %}
+                <div class="row">
+                    <div class="name">{{ item['name'] }}</div>
+                    <div class="price">{{ "%.2f"|format(item['price'] / 100) }} €</div>
+                    <div class="controls">
+                        <a href="/dec/{{ item['product_id'] }}"><button class="btn">-</button></a>
+                        <span class="qty">{{ item['quantity'] }}</span>
+                        <a href="/inc/{{ item['product_id'] }}"><button class="btn">+</button></a>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="total">Total: {{ "%.2f"|format(total / 100) }} €</div>
+                <form method="post" action="/checkout" style="margin-top: 10px; text-align: right;">
+                    <button type="submit" class="btn" style="width:auto; padding:12px 18px; background:#2ecc71;">
+                        Checkout
+                    </button>
+                </form>
+                <form method="post" action="/clear_cart" style="margin-top: 12px; text-align: right;">
+                    <button type="submit" class="btn" style="width: auto; padding: 12px 14px;">
+                        Clear cart
+                    </button>
+                </form>
+            <a class="back" href="/">← Back to catalog</a>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
