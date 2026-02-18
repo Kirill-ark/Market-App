@@ -80,4 +80,5 @@ The application uses a local database created during initialization.
 
 ## Author
 
-Kirill Ark
+Kirill Konstantinovskii
+
